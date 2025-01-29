@@ -14,7 +14,7 @@ const styles = {
     }
 }
 
-const MessageInput = ({ onInput }: any) => {
+const MessageInput = ({ onInput, userName }: any) => {
 
     const [inputMessage, setInputMessage] = useState();
     const onInputChange = (value: any) => {
@@ -27,13 +27,13 @@ const MessageInput = ({ onInput }: any) => {
         >
             <IconButton sx={{ p: '10px' }} aria-label="menu">
                 <Avatar
-                    alt="Sanjay" >
-                    S
+                    alt={userName} >
+                    {userName.charAt(0)}
                 </Avatar>
             </IconButton>
             <InputBase
                 sx={{ ml: 1, flex: 1 }}
-                placeholder="Ask me anything Sanjay!"
+                placeholder={`Ask me anything ${userName}!`}
                 inputProps={{ 'aria-label': 'ask me anything' }}
                 onChange={onInputChange}
             />

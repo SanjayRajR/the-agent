@@ -13,12 +13,12 @@ export async function updateAgentState(data: any) {
             .from('the-agent')
             .insert({
                 user_name: data.name,
-                messages: {
+                messages: [{
                     type: 'ai',
                     message: `Hello ${data.name}. What can I do for you today?`
-                }
+                }]
             }).select()
-        agentId = response.data[0].agentid;
+        agentId = response.data[0].agent_id;
 
     } catch (error) {
         console.error('error', error);

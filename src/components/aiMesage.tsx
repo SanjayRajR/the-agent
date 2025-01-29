@@ -15,7 +15,8 @@ const styles = {
 }
 
 
-const AiMesage = ({ content }: any) => {
+const AiMesage = ({ message }: any) => {
+    console.log(message)
     return (
         <Grid2 sx={styles.grid}>
             <Card sx={styles.card}>
@@ -39,7 +40,7 @@ const AiMesage = ({ content }: any) => {
                 <CardContent>
                     <Typography variant="body2" >
 
-                        {content}
+                        {message}
                     </Typography>
                 </CardContent>
             </Card>

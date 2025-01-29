@@ -1,87 +1,109 @@
-'use client' 
+'use client'
 
 import { Box, Grid2 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import AiMessage from '@/components/aiMesage';
 import HumanMessage from '@/components/humanMessage';
 import MessageInput from '@/components/MessageInput';
+import { createClient } from '../../../../supabase/client';
+import { useParams } from 'next/navigation'
 
 const styles = {
-    mainContainer: {
-      // display:'flex',
-      justifyContent: 'center',
-      textAlign: 'center',
-      borderRadius: '25px',
-      border: {sm: 'none', md: '1px solid #808080'},
-      mt:{sm: 'none', md:'150px'},
-      height: {sm: 'none', md:'700px'},
-      mb: {sm: '50px', md: '0'},
-      mx: 'auto',
-      overflowY: 'auto',
-    },
+  mainContainer: {
+    // display:'flex',
+    justifyContent: 'center',
+    textAlign: 'center',
+    borderRadius: '25px',
+    border: { sm: 'none', md: '1px solid #808080' },
+    mt: { sm: 'none', md: '150px' },
+    height: { sm: 'none', md: '700px' },
+    mb: { sm: '50px', md: '0' },
+    mx: 'auto',
+    overflowY: 'auto',
+  },
+}
+
+
+let dummyMessages = [
+  {
+    type: 'ai',
+    content: 'Hi lets get started with your name'
+  },
+  {
+    type: 'human',
+    content: 'Sanjay Raj R'
+  },
+  {
+    type: 'ai',
+    content: 'Hi Sanjay, what do you want to ask me today?'
+  },
+  {
+    type: 'human',
+    content: "What's the latest news on some of the new FDA regulations in the US?"
+  },
+  {
+    type: 'ai',
+    content: 'Regulation also provides for the submission of a humanitarian device exemption (HDE) application. A Humanitarian Use Device (HUD) is a device that is intended to benefit patients by treating or diagnosing a disease or condition that affects fewer than 8,000 individuals in the United States per year. The (HDE) application is similar in both form and content to a premarket approval (PMA) application, but is exempt from the effectiveness requirements of a PMA.'
   }
-
-  
-  let dummyMessages = [
-    {
-        type: 'ai',
-        content: 'Hi lets get started with your name'
-    },
-    {
-        type: 'human',
-        content: 'Sanjay Raj R'
-    },
-    {
-        type: 'ai',
-        content: 'Hi Sanjay, what do you want to ask me today?'
-    },
-    {
-        type: 'human',
-        content: "What's the latest news on some of the new FDA regulations in the US?"
-    },
-    {
-      type: 'ai',
-      content: 'Regulation also provides for the submission of a humanitarian device exemption (HDE) application. A Humanitarian Use Device (HUD) is a device that is intended to benefit patients by treating or diagnosing a disease or condition that affects fewer than 8,000 individuals in the United States per year. The (HDE) application is similar in both form and content to a premarket approval (PMA) application, but is exempt from the effectiveness requirements of a PMA.'
-    }
-  ]
-  
-
-const page = () => {
+]
 
 
-  const [messages, setMessages] = useState<any>([...dummyMessages])
+export default function page() {
+
+  const params = useParams<{ slug: string }>()
+
+  const [messages, setMessages] = useState<any>([])
+  const [userName, setUserName] = useState('')
+  const supabase = createClient();
+
+  useEffect(() => {
+    supabase.from("the-agent")
+      .select()
+      .eq('agent_id', params.slug)
+      .then((data: any) => {
+        console.log(data)
+        setMessages([...data.data[0].messages])
+        setUserName(data.data[0].user_name)
+      })
+  }, [])
+
 
   const onInput = (text: string) => {
     let oldMsgs = [{
       type: 'human',
-      content: text
+      message: text
     },
     {
       type: 'ai',
-      content: "Here's some results about what you just asked"
+      message: "Here's some results about what you just asked"
     }]
-    setMessages([...messages, ...oldMsgs]);
+    // setMessages([...messages, ...oldMsgs]);
   }
 
+
+
   return (
-    <Grid2 maxWidth="lg" sx={styles.mainContainer}>
-        {messages?.map(({type, content}: any, index: number) => (
+    <>
+      {messages?.length && (
+
+        <Grid2 maxWidth="lg" sx={styles.mainContainer}>
+          {messages?.map(({ type, message }: any, index: number) => (
             <Box pt={'20px'} key={`${index}-msg`}>
 
-            {type == 'ai' && 
-                <AiMessage content={content} />
-            }
-            {type == 'human' && 
-                <HumanMessage content={content}/>
-            }
-          </Box>
-        )
-        )}
+              {type == 'ai' &&
+                <AiMessage message={message} />
+              }
+              {type == 'human' &&
+                <HumanMessage message={message} userName={userName} />
+              }
+            </Box>
+          )
+          )}
 
-      <MessageInput onInput={onInput}/>
 
-    </Grid2>
+          <MessageInput onInput={onInput} userName={userName} />
+        </Grid2>
+      )}
+    </>
   )
 }
-
-export default page

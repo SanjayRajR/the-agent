@@ -14,7 +14,7 @@ const styles = {
     }
 }
 
-const HumanMessage = ({content} : any) => {
+const HumanMessage = ({message, userName} : any) => {
     return (
         <Grid2 sx={styles.grid}>
             <Card sx={styles.card}>
@@ -23,17 +23,17 @@ const HumanMessage = ({content} : any) => {
         <Box sx={{
                                 my: 'auto',
                                 pr: '10px'
-                            }}> Sanjay Raj R</Box>
+                            }}> {userName}</Box>
                             <Avatar
                                 alt="Sanjay" >
-                                S
+                                {userName.chatAt(0)}
                             </Avatar>
         
                         </Box>
        <CardContent sx={{display: "inline-flex"}}>
         <Typography variant="body2" textAlign={'left'} >
           
-            {content}
+            {message}
         </Typography>
       </CardContent>
         </Card>
