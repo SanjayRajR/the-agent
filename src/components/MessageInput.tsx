@@ -22,8 +22,6 @@ const MessageInput = ({ onInput }: any) => {
     }
 
     return (
-
-
         <Paper
             sx={styles.container}
         >

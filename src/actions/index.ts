@@ -9,8 +9,6 @@ export async function updateAgentState(data: any) {
     try {
         const supabase = createServerActionClient({ cookies });
 
-
-        console.log(data)
         const response:any = await supabase
             .from('the-agent')
             .insert({
