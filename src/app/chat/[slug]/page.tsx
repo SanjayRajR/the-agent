@@ -17,7 +17,7 @@ const styles = {
       height: {sm: 'none', md:'700px'},
       mb: {sm: '50px', md: '0'},
       mx: 'auto',
-      overflowY: 'auto'
+      overflowY: 'auto',
     },
   }
 
