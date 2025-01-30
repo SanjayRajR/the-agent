@@ -1,4 +1,4 @@
-import { Avatar, IconButton, InputBase, Paper } from '@mui/material'
+import { Avatar, CircularProgress, IconButton, InputBase, Paper } from '@mui/material'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import React, { useState } from 'react'
 import FormControl, { useFormControl } from '@mui/material/FormControl';
@@ -14,12 +14,13 @@ const styles = {
     }
 }
 
-const MessageInput = ({ onInput, userName }: any) => {
+const MessageInput = ({ onInput, userName, isAgentRunning }: any) => {
 
     const [inputMessage, setInputMessage] = useState();
     const onInputChange = (value: any) => {
         setInputMessage(value.target.value);
     }
+    console.log(isAgentRunning)
 
     return (
         <Paper
@@ -33,14 +34,16 @@ const MessageInput = ({ onInput, userName }: any) => {
             </IconButton>
             <InputBase
                 sx={{ ml: 1, flex: 1 }}
-                placeholder={`Ask me anything ${userName}!`}
+                placeholder={isAgentRunning ? `Your answers are on the way!` : `Ask me anything ${userName}!`}
                 inputProps={{ 'aria-label': 'ask me anything' }}
                 onChange={onInputChange}
+                disabled={isAgentRunning}
             />
             <IconButton type="button" sx={{ p: '10px' }} aria-label="type" 
                 onClick={() => onInput(inputMessage)}
             >
-                <ArrowUpwardIcon />
+                {isAgentRunning && <CircularProgress sx={{color: 'black'}}/>}
+                {!isAgentRunning && <ArrowUpwardIcon />}
             </IconButton>
         </Paper>
     )

@@ -5,7 +5,7 @@ import { Avatar, Box, Button, Container, IconButton, InputBase, Paper } from "@m
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useRouter } from 'next/navigation'
 import { useState } from "react";
-import { updateAgentState } from "@/actions";
+import { initiateAgent } from "@/actions";
 
 const styles = {
   mainContainer: {
@@ -36,7 +36,7 @@ export default function Home() {
   }
 
   const onClick = () => {
-    updateAgentState({ name: userName })
+    initiateAgent({ name: userName })
   }
   return (
     <Box maxWidth="sm" sx={styles.mainContainer}>

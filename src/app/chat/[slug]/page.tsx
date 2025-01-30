@@ -7,6 +7,7 @@ import HumanMessage from '@/components/humanMessage';
 import MessageInput from '@/components/MessageInput';
 import { createClient } from '../../../../supabase/client';
 import { useParams } from 'next/navigation'
+import { updateAgent } from '@/actions';
 
 const styles = {
   mainContainer: {
@@ -54,6 +55,7 @@ export default function page() {
 
   const [messages, setMessages] = useState<any>([])
   const [userName, setUserName] = useState('')
+  const [isAgentRunning, setIsAgentRunnig] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
@@ -64,20 +66,36 @@ export default function page() {
         console.log(data)
         setMessages([...data.data[0].messages])
         setUserName(data.data[0].user_name)
+        setIsAgentRunnig(data.data[0].running_status)
       })
-  }, [])
+
+
+      const handleUpdates = (payload:any) => {
+        setMessages(payload.new.messages)
+        setIsAgentRunnig(payload.new.running_status);
+      }
+
+      const channel = supabase.channel('realtime posts')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'the-agent', filter:`agent_id=eq.${params.slug}`}, handleUpdates)
+      .subscribe()
+
+
+      return () => {
+        supabase.removeChannel(channel)
+      }
+  }, [supabase])
 
 
   const onInput = (text: string) => {
-    let oldMsgs = [{
+    let oldMsgs = [...messages, {
       type: 'human',
       message: text
-    },
-    {
-      type: 'ai',
-      message: "Here's some results about what you just asked"
     }]
-    // setMessages([...messages, ...oldMsgs]);
+    setMessages(oldMsgs);
+    updateAgent({
+      agentId: params.slug,
+      messages: oldMsgs
+    })
   }
 
 
@@ -99,9 +117,7 @@ export default function page() {
             </Box>
           )
           )}
-
-
-          <MessageInput onInput={onInput} userName={userName} />
+          <MessageInput onInput={onInput} userName={userName} isAgentRunning={isAgentRunning}/>
         </Grid2>
       )}
     </>

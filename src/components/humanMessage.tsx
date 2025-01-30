@@ -25,8 +25,8 @@ const HumanMessage = ({message, userName} : any) => {
                                 pr: '10px'
                             }}> {userName}</Box>
                             <Avatar
-                                alt="Sanjay" >
-                                {userName.chatAt(0)}
+                                alt={userName} >
+                                {userName.charAt(0)}
                             </Avatar>
         
                         </Box>

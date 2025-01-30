@@ -16,7 +16,6 @@ const styles = {
 
 
 const AiMesage = ({ message }: any) => {
-    console.log(message)
     return (
         <Grid2 sx={styles.grid}>
             <Card sx={styles.card}>
