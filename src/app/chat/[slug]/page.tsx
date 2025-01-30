@@ -48,6 +48,7 @@ export default function page() {
 
 
       const handleUpdates = (payload:any) => {
+        setAgentData(payload.new);
         setMessages(payload.new.messages)
         setIsAgentRunnig(payload.new.running_status);
       }
@@ -68,6 +69,7 @@ export default function page() {
       type: 'human',
       message: text
     }]
+    setIsAgentRunnig(true);
     setMessages(oldMsgs);
     updateAgent({
       agentId: params.slug,

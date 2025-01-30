@@ -17,7 +17,6 @@ const styles = {
 
 
 const AiMesage = ({ message, agentData, index }: any) => {
-    console.log(agentData)
     return (
         <Grid2 sx={styles.grid}>
             <Card sx={styles.card}>
@@ -41,7 +40,7 @@ const AiMesage = ({ message, agentData, index }: any) => {
                     <Typography variant="body2" >
                         {message}
                     </Typography>
-                    {index > 1 && <ViewOutput agentData={agentData}/>}
+                    {index > 1 && <ViewOutput agentData={agentData} index={index}/>}
                 </CardContent>
             </Card>
         </Grid2>
