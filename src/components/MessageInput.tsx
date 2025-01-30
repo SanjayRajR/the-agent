@@ -1,17 +1,17 @@
-import { Avatar, CircularProgress, IconButton, InputBase, Paper } from '@mui/material'
+import { Avatar, Box, CircularProgress, IconButton, InputBase, Paper } from '@mui/material'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import React, { useState } from 'react'
-import FormControl, { useFormControl } from '@mui/material/FormControl';
-import DownloadReport from './ViewOutput';
 
 const styles = {
     container: {
+        bordertop: 'gray',
         width: { sm: '100%', md: '60%' },
         aliignItems: 'center',
         display: 'flex',
         margin: 'auto',
         backgroundColor: 'grey',
-        mb: '40px'
+        mb: '40px',
+        mt: '20px'
     }
 }
 
@@ -29,7 +29,7 @@ const MessageInput = ({ onInput, userName, isAgentRunning }: any) => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ borderTop: {md: '1px solid gray'}}} >
         <Paper
             sx={styles.container}
         >
@@ -39,7 +39,7 @@ const MessageInput = ({ onInput, userName, isAgentRunning }: any) => {
                     {userName.charAt(0)}
                 </Avatar>
             </IconButton>
-            {/* <form onSubmit={}> */}
+
             <InputBase
                 sx={{ ml: 1, flex: 1 }}
                 placeholder={isAgentRunning ? `Your answers are on the way!` : `Ask me anything ${userName}!`}
@@ -54,11 +54,9 @@ const MessageInput = ({ onInput, userName, isAgentRunning }: any) => {
                 {isAgentRunning && <CircularProgress sx={{color: 'black'}}/>}
                 {!isAgentRunning && <ArrowUpwardIcon />}
             </IconButton>
-
-            {/* </form> */}
         </Paper>
 
-        </form>
+        </Box>
     )
 }
 
