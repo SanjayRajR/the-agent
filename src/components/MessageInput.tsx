@@ -21,7 +21,6 @@ const MessageInput = ({ onInput, userName, isAgentRunning }: any) => {
     const onInputChange = (value: any) => {
         setInputMessage(value.target.value);
     }
-    console.log(isAgentRunning)
 
     return (
         <Paper

@@ -3,7 +3,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import React, { useState } from 'react'
 import Editor from './Editor';
 
-const ViewOutput = () => {
+const ViewOutput = ({agentData}: any) => {
 
   const [isOpen, setIsopen] = useState(false);
   return (
@@ -15,7 +15,7 @@ const ViewOutput = () => {
       >
         View Detailed Output
       </Button>
-      {isOpen && <Editor setIsOpen={setIsopen} />}
+      {isOpen && <Editor setIsOpen={setIsopen} agentData={agentData}/>}
     </Box>
   )
 }

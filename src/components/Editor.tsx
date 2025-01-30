@@ -1,61 +1,62 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import EditorJS from '@editorjs/editorjs'
 import { Box, Modal } from '@mui/material'
+import Header from '@editorjs/header';
 
-const modalStyle =  {
-    position: {sm: 'absolute'},
-    top: {sm: '50%'},
-    left: {sm: '50%'},
-    transform: {xs: 'none', sm: 'translate(-50%, -50%)'},
-    width: {xs: '100%', sm:'700px'},
-    height: {xs: '100%', sm:'500px'}, 
+const modalStyle = {
+    position: { sm: 'absolute' },
+    top: { sm: '50%' },
+    left: { sm: '50%' },
+    transform: { xs: 'none', sm: 'translate(-50%, -50%)' },
+    width: { xs: '100%', sm: '700px' },
+    height: { xs: '100%', sm: '500px' },
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-  };
+    color: '#000000'
+};
 
-const Editor = ({setIsOpen}: any) => {
-
-    const ejInstance = useRef<any>(null);
-
-    const initEditor = () => {
-        const editor = new EditorJS({
-            holder: 'editorjs',
-            onReady: () => {
-                ejInstance.current = editor;
-            },
-            autofocus: true,
-            onChange: async () => {
-                let content = await editor.saver.save();
-
-                console.log(content)
+const Editor = ({ setIsOpen, agentData }: any) => {
+    const editorData = {
+        time: new Date().getTime(),
+        blocks: [
+            {
+                type: 'header',
+                data: {
+                    level: 1,
+                    text: `Here's your detailed output ${agentData.user_name} !`
+                }
             }
-        })
+        ]
     }
 
-    useEffect(() => {
-        if(ejInstance.current === null){
-            initEditor();
-        }
+    const [editor, setEditor] = useState<any>()
 
-        return () => {
-            ejInstance?.current?.destroy();
-            ejInstance.current = null;
-        }
+    useEffect(() => {
+        editor == undefined && setEditor(() => new EditorJS({
+            holder: 'editorjs',
+            autofocus: true,
+            tools: {
+                header: Header
+            },
+            readOnly: true,
+            data: editorData
+        }))
+
     }, [])
 
-  return (
-    <Modal
-        open = { true }
-        onClose={() => setIsOpen(false)}
-    >
-    <Box id="editorjs" sx={modalStyle}>
-      
-    </Box>
+    return (
+        <Modal
+            open={true}
+            onClose={() => setIsOpen(false)}
+        >
+            <Box id="editorjs" sx={modalStyle}>
 
-    </Modal>
-  )
+            </Box>
+
+        </Modal>
+    )
 }
 
 export default Editor

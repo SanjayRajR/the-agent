@@ -53,6 +53,7 @@ export default function page() {
 
   const params = useParams<{ slug: string }>()
 
+  const [agentData, setAgentData] = useState();
   const [messages, setMessages] = useState<any>([])
   const [userName, setUserName] = useState('')
   const [isAgentRunning, setIsAgentRunnig] = useState(false);
@@ -63,7 +64,7 @@ export default function page() {
       .select()
       .eq('agent_id', params.slug)
       .then((data: any) => {
-        console.log(data)
+        setAgentData(data.data[0]);
         setMessages([...data.data[0].messages])
         setUserName(data.data[0].user_name)
         setIsAgentRunnig(data.data[0].running_status)
@@ -109,7 +110,7 @@ export default function page() {
             <Box pt={'20px'} key={`${index}-msg`}>
 
               {data.type == 'ai' &&
-                <AiMessage message={data.message} index={index} data={data}/>
+                <AiMessage message={data.message} index={index} agentData={agentData}/>
               }
               {data.type == 'human' &&
                 <HumanMessage message={data.message} userName={userName} />
