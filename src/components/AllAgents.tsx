@@ -1,4 +1,4 @@
-import { Avatar, Box, Divider, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Modal, Typography } from '@mui/material'
+import { Avatar, Box, CircularProgress, Divider, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Modal, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { createClient } from '../../supabase/client';
 import { useRouter } from 'next/navigation';
@@ -22,6 +22,7 @@ const modalStyle = {
 const AllAgents = ({ setIsModalOpen }: any) => {
 
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(true);
 
     const supabase = createClient();
     const [agentData, setAgentData] = useState([]);
@@ -31,12 +32,13 @@ const AllAgents = ({ setIsModalOpen }: any) => {
             .select()
             .then((data: any) => {
                 setAgentData(data.data);
+                setIsLoading(false)
             })
     }, [])
 
     const handleAgentClick = (agentId: string) => {
         router.push(`/chat/${agentId}`)
-        
+
     }
 
     return (
@@ -44,40 +46,47 @@ const AllAgents = ({ setIsModalOpen }: any) => {
             open={true}
             onClose={() => setIsModalOpen(false)}
         >
-            <Box sx={modalStyle}>
-                {agentData?.map((agents: any) => (
+            <>
 
-                    <List key={agents.agent_id} id={agents.agent_id} sx={{ width: '100%', maxWidth: 'none', bgcolor: 'background.paper' }}>
-                        <ListItemButton onClick={() => handleAgentClick(agents.agent_id)}>
+                {isLoading && <CircularProgress />}
+                {!isLoading && (
 
-                        <ListItem alignItems="flex-start">
-                            <ListItemAvatar>
-                                <Avatar
-                                    alt={agents.user_name} >
-                                    {agents.user_name.charAt(0)}
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={`${agents.messages[0].message}`}
-                                secondary={
-                                    <React.Fragment>
-                                        <Typography
-                                            component="span"
-                                            variant="body2"
-                                            sx={{ color: 'text.primary', display: 'inline' }}
-                                        >
-                                            {agents.user_name}
-                                        </Typography>
-                                        {agents.messages.length > 1 ? ` — ${agents.messages[1].message}…`: `, Go ahead and ask your first question now` }
-                                    </React.Fragment>
-                                }
-                            />
-                        </ListItem>
-                        </ListItemButton>
-                        <Divider variant="inset" component="li" />
-                    </List>
-                ))}
-            </Box>
+                    <Box sx={modalStyle}>
+                        {agentData?.map((agents: any) => (
+
+                            <List key={agents.agent_id} id={agents.agent_id} sx={{ width: '100%', maxWidth: 'none', bgcolor: 'background.paper' }}>
+                                <ListItemButton onClick={() => handleAgentClick(agents.agent_id)}>
+
+                                    <ListItem alignItems="flex-start">
+                                        <ListItemAvatar>
+                                            <Avatar
+                                                alt={agents.user_name} >
+                                                {agents.user_name.charAt(0)}
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={`${agents.messages[0].message}`}
+                                            secondary={
+                                                <React.Fragment>
+                                                    <Typography
+                                                        component="span"
+                                                        variant="body2"
+                                                        sx={{ color: 'text.primary', display: 'inline' }}
+                                                    >
+                                                        {agents.user_name}
+                                                    </Typography>
+                                                    {agents.messages.length > 1 ? ` — ${agents.messages[1].message}…` : `, Go ahead and ask your first question now`}
+                                                </React.Fragment>
+                                            }
+                                        />
+                                    </ListItem>
+                                </ListItemButton>
+                                <Divider variant="inset" component="li" />
+                            </List>
+                        ))}
+                    </Box>
+                )}
+            </>
 
         </Modal>
     )

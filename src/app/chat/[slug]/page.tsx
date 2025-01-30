@@ -1,7 +1,7 @@
 'use client'
 
 import { Box, Grid2 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AiMessage from '@/components/aiMesage';
 import HumanMessage from '@/components/humanMessage';
 import MessageInput from '@/components/MessageInput';
@@ -11,7 +11,6 @@ import { updateAgent } from '@/actions';
 
 const styles = {
   mainContainer: {
-    // display:'flex',
     justifyContent: 'center',
     textAlign: 'center',
     borderRadius: '25px',
@@ -26,6 +25,13 @@ const styles = {
 
 
 export default function page() {
+
+
+  const messageEndRef = useRef<null | HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messageEndRef?.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
   const params = useParams<{ slug: string }>()
 
@@ -57,11 +63,14 @@ export default function page() {
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'the-agent', filter:`agent_id=eq.${params.slug}`}, handleUpdates)
       .subscribe()
 
-
       return () => {
         supabase.removeChannel(channel)
       }
   }, [supabase])
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages])
 
 
   const onInput = (text: string) => {
@@ -82,7 +91,7 @@ export default function page() {
   return (
     <>
       {messages?.length && (
-
+        <Box>
         <Grid2 maxWidth="lg" sx={styles.mainContainer}>
           {messages?.map((data: any, index: number) => (
             <Box pt={'20px'} key={`${index}-msg`}>
@@ -93,11 +102,13 @@ export default function page() {
               {data.type == 'human' &&
                 <HumanMessage message={data.message} userName={userName} />
               }
+              <div ref={messageEndRef} />
             </Box>
           )
           )}
-          <MessageInput onInput={onInput} userName={userName} isAgentRunning={isAgentRunning}/>
         </Grid2>
+        <MessageInput onInput={onInput} userName={userName} isAgentRunning={isAgentRunning}/>
+        </Box>
       )}
     </>
   )
