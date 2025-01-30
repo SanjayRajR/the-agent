@@ -10,7 +10,7 @@ const ViewOutput = ({agentData, index}: any) => {
     <Box sx={{ my: '20px' }}>
 
       <Button variant="outlined" endIcon={<ArrowForwardIcon /> }
-        sx={{ color: 'grey' }}
+        sx={{ color: 'grey', borderColor: 'grey'}}
         onClick={() => setIsopen(true)}
       >
         View Detailed Output

@@ -11,7 +11,8 @@ const styles = {
   mainContainer: {
     // display:'flex',
     justifyContent: 'center',
-    pt: '250px',
+    pt: {xs: '170px', md: '250px'},
+    mx: {xs: '20px', sm: 'auto'},
     m: 'auto',
     textAlign: 'center'
   },
@@ -35,7 +36,8 @@ export default function Home() {
     setUserName(value.target.value);
   }
 
-  const onClick = () => {
+  const onClick = (e:any) => {
+    e?.preventDefault();
     setIsLoading(true);
     initiateAgent({ name: userName })
   }
@@ -55,6 +57,7 @@ export default function Home() {
       </Box>
       <Box>
         <Box>
+          <form onSubmit={onClick}>
           <Paper
             sx={styles.textContainer}
           >
@@ -71,6 +74,8 @@ export default function Home() {
               {!isLoading && <ArrowForwardIcon />}
             </IconButton>
           </Paper>
+
+          </form>
 
           <Box sx={{mt: '40px'}}>
               <Button  sx={{color: 'grey'}} endIcon={<ArrowForwardIcon />} onClick={() => setIsModalOpen(true)}>

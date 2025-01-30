@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Grid2 } from '@mui/material'
+import { Box, CircularProgress, Divider, Grid2 } from '@mui/material'
 import React, { useEffect, useRef, useState } from 'react'
 import AiMessage from '@/components/aiMesage';
 import HumanMessage from '@/components/humanMessage';
@@ -11,21 +11,24 @@ import { updateAgent } from '@/actions';
 
 const styles = {
   mainContainer: {
-    justifyContent: 'center',
-    textAlign: 'center',
+    height: { sm: 'none', md: '600px' },
+    overflowY: 'auto',
+  },
+  boxContainer: {
+    height: { sm: 'none', md: '700px' },
     borderRadius: '25px',
     border: { sm: 'none', md: '1px solid #808080' },
     mt: { sm: 'none', md: '150px' },
-    height: { sm: 'none', md: '700px' },
-    mb: { sm: '50px', md: '0' },
-    mx: 'auto',
-    overflowY: 'auto',
-  },
+    justifyContent: 'center',
+    textAlign: 'center',
+    mx: 'auto'
+  }
 }
 
 
 export default function page() {
 
+  const [isLoading, setIsLoading] = useState(true);
 
   const messageEndRef = useRef<null | HTMLDivElement>(null);
 
@@ -50,6 +53,7 @@ export default function page() {
         setMessages([...data.data[0].messages])
         setUserName(data.data[0].user_name)
         setIsAgentRunnig(data.data[0].running_status)
+        setIsLoading(false)
       })
 
 
@@ -90,9 +94,10 @@ export default function page() {
 
   return (
     <>
-      {messages?.length && (
-        <Box>
-        <Grid2 maxWidth="lg" sx={styles.mainContainer}>
+    {isLoading && <CircularProgress sx={{color: 'black', display: 'flex', m: 'auto'}}/>}
+      {!isLoading && messages?.length && (
+        <Box maxWidth="lg" sx={styles.boxContainer}>
+        <Grid2 sx={styles.mainContainer}>
           {messages?.map((data: any, index: number) => (
             <Box pt={'20px'} key={`${index}-msg`}>
 
