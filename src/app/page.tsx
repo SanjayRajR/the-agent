@@ -3,9 +3,9 @@ import Image from "next/image";
 // import styles from "./page.module.css";
 import { Avatar, Box, Button, Container, IconButton, InputBase, Paper } from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useRouter } from 'next/navigation'
 import { useState } from "react";
 import { initiateAgent } from "@/actions";
+import AllAgents from "@/components/AllAgents";
 
 const styles = {
   mainContainer: {
@@ -27,9 +27,8 @@ const styles = {
 
 export default function Home() {
 
-  const router = useRouter();
-
   const [userName, setUserName] = useState<string>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onInputChange = (value: any) => {
     setUserName(value.target.value);
@@ -69,12 +68,13 @@ export default function Home() {
               <ArrowForwardIcon />
             </IconButton>
           </Paper>
-          <InputBase
-            sx={{ ml: 1, flex: 1 }}
-            placeholder="Type your name"
-            inputProps={{ 'aria-label': 'Name' }}
-            onChange={onInputChange}
-          />
+
+          <Box sx={{mt: '40px'}}>
+              <Button  sx={{color: 'grey'}} endIcon={<ArrowForwardIcon />} onClick={() => setIsModalOpen(true)}>
+                Start a previous thread
+              </Button>
+            </Box>
+            {isModalOpen && <AllAgents setIsModalOpen={setIsModalOpen} />}
         </Box>
       </Box>
     </Box>

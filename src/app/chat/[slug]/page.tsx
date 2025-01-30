@@ -25,30 +25,6 @@ const styles = {
 }
 
 
-let dummyMessages = [
-  {
-    type: 'ai',
-    content: 'Hi lets get started with your name'
-  },
-  {
-    type: 'human',
-    content: 'Sanjay Raj R'
-  },
-  {
-    type: 'ai',
-    content: 'Hi Sanjay, what do you want to ask me today?'
-  },
-  {
-    type: 'human',
-    content: "What's the latest news on some of the new FDA regulations in the US?"
-  },
-  {
-    type: 'ai',
-    content: 'Regulation also provides for the submission of a humanitarian device exemption (HDE) application. A Humanitarian Use Device (HUD) is a device that is intended to benefit patients by treating or diagnosing a disease or condition that affects fewer than 8,000 individuals in the United States per year. The (HDE) application is similar in both form and content to a premarket approval (PMA) application, but is exempt from the effectiveness requirements of a PMA.'
-  }
-]
-
-
 export default function page() {
 
   const params = useParams<{ slug: string }>()
