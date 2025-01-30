@@ -105,14 +105,14 @@ export default function page() {
       {messages?.length && (
 
         <Grid2 maxWidth="lg" sx={styles.mainContainer}>
-          {messages?.map(({ type, message }: any, index: number) => (
+          {messages?.map((data: any, index: number) => (
             <Box pt={'20px'} key={`${index}-msg`}>
 
-              {type == 'ai' &&
-                <AiMessage message={message} />
+              {data.type == 'ai' &&
+                <AiMessage message={data.message} index={index} data={data}/>
               }
-              {type == 'human' &&
-                <HumanMessage message={message} userName={userName} />
+              {data.type == 'human' &&
+                <HumanMessage message={data.message} userName={userName} />
               }
             </Box>
           )

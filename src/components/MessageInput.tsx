@@ -2,7 +2,7 @@ import { Avatar, CircularProgress, IconButton, InputBase, Paper } from '@mui/mat
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import React, { useState } from 'react'
 import FormControl, { useFormControl } from '@mui/material/FormControl';
-import DownloadReport from './DownloadReport';
+import DownloadReport from './ViewOutput';
 
 const styles = {
     container: {
@@ -46,7 +46,6 @@ const MessageInput = ({ onInput, userName, isAgentRunning }: any) => {
                 {isAgentRunning && <CircularProgress sx={{color: 'black'}}/>}
                 {!isAgentRunning && <ArrowUpwardIcon />}
             </IconButton>
-            {!isAgentRunning && <DownloadReport />}
         </Paper>
     )
 }

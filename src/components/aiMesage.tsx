@@ -1,6 +1,7 @@
-import { Avatar, Box, Card, CardContent, CardHeader, Grid2, IconButton, Typography } from '@mui/material'
+import { Avatar, Box, Button, Card, CardContent, CardHeader, Grid2, IconButton, Typography } from '@mui/material'
 import Image from 'next/image'
 import React from 'react'
+import ViewOutput from './ViewOutput'
 
 const styles = {
     grid: {
@@ -15,7 +16,7 @@ const styles = {
 }
 
 
-const AiMesage = ({ message }: any) => {
+const AiMesage = ({ message, data, index }: any) => {
     return (
         <Grid2 sx={styles.grid}>
             <Card sx={styles.card}>
@@ -33,14 +34,13 @@ const AiMesage = ({ message }: any) => {
                         my: 'auto',
                         pl: '10px'
                     }}> The Agent</Box>
-
                 </Box>
 
                 <CardContent>
                     <Typography variant="body2" >
-
                         {message}
                     </Typography>
+                    {index > 1 && <ViewOutput />}
                 </CardContent>
             </Card>
         </Grid2>
