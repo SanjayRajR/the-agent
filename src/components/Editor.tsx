@@ -17,54 +17,6 @@ const modalStyle = {
     color: '#000000'
 };
 
-export const data = {
-    blocks: [
-      {
-        type: "header",
-        data: {
-          text: "Editor.js",
-          level: 2
-        }
-      },
-      {
-        type: "paragraph",
-        data: {
-          text:
-            "Hey. Meet the new Editor. On this page you can see it in action — try to edit this text."
-        }
-      },
-      {
-        type: "header",
-        data: {
-          text: "Detailed Output",
-          level: 3
-        }
-      },
-      {
-        type: "header",
-        data: {
-          text: "What does it mean «block-styled editor»",
-          level: 3
-        }
-      },
-      {
-        type: "paragraph",
-        data: {
-          text:
-            'There are dozens of <a href="https://github.com/editor-js">ready-to-use Blocks</a> and the <a href="https://editorjs.io/creating-a-block-tool">simple API</a> for creation any Block you need. For example, you can implement Blocks for Tweets, Instagram posts, surveys and polls, CTA-buttons and even games.'
-        }
-      },
-      {
-        type: "header",
-        data: {
-          text: "What does it mean clean data output",
-          level: 3
-        }
-      },
-      
-    ]
-  };
-
 const Editor = ({ setIsOpen, agentData, index }: any) => {
     const outputMessage = agentData.messages[index].message;
     const referenceData = agentData.reference_data[index/2 - 1];
@@ -72,8 +24,6 @@ const Editor = ({ setIsOpen, agentData, index }: any) => {
     const agentOutput = agentData.output.filter((output:any) => {
         return Object.keys(output)[0] == index
     })[0]
-
-    console.log(agentOutput, index, agentOutput[index])
 
     const blocks = [
         {

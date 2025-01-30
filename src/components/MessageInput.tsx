@@ -17,7 +17,7 @@ const styles = {
 
 const MessageInput = ({ onInput, userName, isAgentRunning }: any) => {
 
-    const [inputMessage, setInputMessage] = useState();
+    const [inputMessage, setInputMessage] = useState<string>();
     const onInputChange = (value: any) => {
         setInputMessage(value.target.value);
     }
@@ -38,9 +38,13 @@ const MessageInput = ({ onInput, userName, isAgentRunning }: any) => {
                 inputProps={{ 'aria-label': 'ask me anything' }}
                 onChange={onInputChange}
                 disabled={isAgentRunning}
+                value={inputMessage}
             />
             <IconButton type="button" sx={{ p: '10px' }} aria-label="type" 
-                onClick={() => onInput(inputMessage)}
+                onClick={() => {
+                    onInput(inputMessage)
+                    setInputMessage("");
+                }}
             >
                 {isAgentRunning && <CircularProgress sx={{color: 'black'}}/>}
                 {!isAgentRunning && <ArrowUpwardIcon />}

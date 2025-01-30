@@ -1,7 +1,7 @@
 'use client'
 import Image from "next/image";
 // import styles from "./page.module.css";
-import { Avatar, Box, Button, Container, IconButton, InputBase, Paper } from "@mui/material";
+import { Avatar, Box, Button, CircularProgress, Container, IconButton, InputBase, Paper } from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useState } from "react";
 import { initiateAgent } from "@/actions";
@@ -28,6 +28,7 @@ const styles = {
 export default function Home() {
 
   const [userName, setUserName] = useState<string>();
+  const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onInputChange = (value: any) => {
@@ -35,6 +36,7 @@ export default function Home() {
   }
 
   const onClick = () => {
+    setIsLoading(true);
     initiateAgent({ name: userName })
   }
   return (
@@ -65,7 +67,8 @@ export default function Home() {
             <IconButton type="button" sx={{ p: '10px' }} aria-label="type"
               onClick={onClick}
             >
-              <ArrowForwardIcon />
+              {isLoading && <CircularProgress sx={{color: 'black'}}/>}
+              {!isLoading && <ArrowForwardIcon />}
             </IconButton>
           </Paper>
 
